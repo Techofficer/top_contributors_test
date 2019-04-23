@@ -1,11 +1,3 @@
-//
-//  Top_GithubersTests.swift
-//  Top GithubersTests
-//
-//  Created by Артем Ефремов on 23/04/2019.
-//  Copyright © 2019 Artem Efremov. All rights reserved.
-//
-
 import XCTest
 @testable import Top_Githubers
 
