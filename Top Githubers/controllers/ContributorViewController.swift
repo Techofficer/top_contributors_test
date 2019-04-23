@@ -44,6 +44,7 @@ class ContributorViewController: GenericViewController {
             }
             
             guard let address = result?["location"] as? String  else {
+                self.hideSpinner()
                 self.showError(error: "Contributor's location is not known")
                 return
             }
