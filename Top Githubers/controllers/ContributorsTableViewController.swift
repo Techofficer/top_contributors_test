@@ -14,10 +14,10 @@ class ContributorsTableViewController: GenericViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        retrieveContributors()
+        retrieveContributors(nil)
     }
     
-    func retrieveContributors(){
+    func retrieveContributors(_ completion: (() -> Void)?){
         displaySpinner()
         
         GithubApi.getContributors { error, result in
@@ -37,6 +37,7 @@ class ContributorsTableViewController: GenericViewController {
                 self.tableView.reloadData()
             }
             
+            completion?()
         }
     }
 

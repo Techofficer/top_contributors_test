@@ -33,6 +33,22 @@ class ContributorViewController: GenericViewController {
         errorLabel.text = error
     }
     
+    func getContributorLocation(data : AnyObject?, completion: @escaping (String?, CLLocation?) -> Void){
+        guard let address = data?["location"] as? String  else {
+            completion("Contributor's location is not known", nil)
+            return
+        }
+        
+        geocoder.geocodeAddressString(address) { (placemarks, error) in
+            guard let placemark = placemarks?.first, let location = placemark.location else {
+                completion("Contributor's location is not known", nil)
+                return
+            }
+            
+            completion(nil, location)
+        }
+    }
+    
     func retrieveContributorLocation(){
         displaySpinner()
         
@@ -43,22 +59,17 @@ class ContributorViewController: GenericViewController {
                 return
             }
             
-            guard let address = result?["location"] as? String  else {
+            self.getContributorLocation(data: result){ error, location in
                 self.hideSpinner()
-                self.showError(error: "Contributor's location is not known")
-                return
-            }
-            
-            self.geocoder.geocodeAddressString(address) { (placemarks, error) in
-                self.hideSpinner()
-                    
-                guard let p = placemarks?.first, let location = p.location else {
-                    self.showError(error: "Contributor's location is not known")
+                
+                if let error = error {
+                    self.showError(error: error)
                     return
                 }
-                        
-                self.addMarket(location: location)
+                
+                self.addMarket(location: location!)
             }
+
         }
     }
     
